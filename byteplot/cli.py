@@ -93,7 +93,16 @@ def main():
     pe_audit = sub.add_parser("audit-pe", help="VM only: read-only PE audit of existing candidates.")
     pe_audit.add_argument("--manifest", required=True, help="Existing candidate CSV; never modified.")
     pe_audit.add_argument("--binary-root", required=True, help="Directory containing extracted sample paths.")
-    pe_audit.add_argument("--out", required=True, help="New output CSV outside binary-root; never overwritten.")
+    pe_output = pe_audit.add_mutually_exclusive_group(required=True)
+    pe_output.add_argument("--out", help="New single-run CSV; never overwritten.")
+    pe_output.add_argument("--state-dir", help="Durable batch checkpoint outside binary-root.")
+    pe_audit.add_argument("--resume", action="store_true", help="Resume an existing batch checkpoint.")
+    pe_audit.add_argument("--batch-size", type=int, help="Maximum new records this invocation (default 256; 0 plans/exports only).")
+    pe_audit.add_argument("--max-batch-bytes", type=int, help="Maximum staged input bytes per invocation (default 4 GiB).")
+    pe_audit.add_argument("--min-free-bytes", type=int, help="Stop below this free space on binary/state disks (default 5 GiB).")
+    pe_audit.add_argument("--export", action="store_true", help="Also export all committed records into a new snapshot.")
+    pe_audit.add_argument("--sha-column", default="sha256", help="Original SHA column in the full V0 manifest.")
+    pe_audit.add_argument("--expected-count", type=int, help="Require this many records before initializing/resuming.")
     pe_audit.add_argument("--path-column", default="zip_member")
     pe_audit.add_argument("--height", type=int, default=256)
     pe_audit.add_argument("--width", type=int, default=256)
@@ -155,8 +164,30 @@ def main():
         elif args.command == "audit-pe":
             from .pe_audit import audit_pe
             try:
-                audit_pe(args.manifest, args.binary_root, args.out, args.height, args.width,
-                         args.die, args.timeout, args.path_column, args.die_db_id)
+                if args.state_dir:
+                    from .pe_batch import GIB, audit_pe_batches
+                    if args.path_column != "zip_member":
+                        raise ValueError("Batch mode derives altered/<sha>.exe; do not set --path-column.")
+                    audit_pe_batches(
+                        args.manifest, args.binary_root, args.state_dir, resume=args.resume,
+                        batch_size=args.batch_size if args.batch_size is not None else 256,
+                        max_batch_bytes=args.max_batch_bytes if args.max_batch_bytes is not None else 4 * GIB,
+                        min_free_bytes=args.min_free_bytes if args.min_free_bytes is not None else 5 * GIB,
+                        export=args.export, sha_column=args.sha_column, expected_count=args.expected_count,
+                        height=args.height, width=args.width, die=args.die,
+                        timeout=args.timeout, die_db_id=args.die_db_id,
+                    )
+                else:
+                    if (args.resume or args.export or args.batch_size is not None
+                            or args.max_batch_bytes is not None or args.min_free_bytes is not None
+                            or args.expected_count is not None or args.sha_column != "sha256"):
+                        raise ValueError("Batch options require --state-dir.")
+                    audit_pe(args.manifest, args.binary_root, args.out, args.height, args.width,
+                             args.die, args.timeout, args.path_column, args.die_db_id)
+            except KeyboardInterrupt:
+                if args.state_dir:
+                    parser.exit(130, "Interrupted; committed rows remain in checkpoint. Run with --resume.\n")
+                raise
             except OSError as exc:
                 parser.exit(2, f"Error: {exc}\n")
         elif args.command == "visualize":

@@ -252,6 +252,140 @@ warnings before a later step. This report is not a training manifest for prepare
 the main pipeline's V0 hash contract, CNN and E0-E5 recipes remain unchanged.
 This audit gives no evidence of packing success, classifier performance or H1-H4.
 
+## 4.6. Full BODMAS E0 audit with offline batches and durable resume
+
+Batch mode reuses the per-file audit-pe implementation, but reads the complete
+bodmas_manifest_v0_verified.csv. There is no pilot-size limit. Use --expected-count
+57293 to reject an incomplete manifest before creating or resuming a checkpoint.
+
+The default original ID column is sha256 (override with --sha-column).
+IDs must be unique lowercase SHA-256 strings. Every ID maps to
+altered/<original-sha>.exe beneath --binary-root. An existing parent_sha256 or
+zip_member must agree with that mapping. Missing parent/path columns are derived
+in memory; the input CSV is never rewritten. Non-V0 or malformed manifests are
+rejected before processing. Observed file bytes remain disarmed_sha256, separate
+from original identity. No samples, archives or transfer tools are bundled.
+
+### Prepare a transfer plan without any binaries in the VM
+
+Create an empty staging directory once. Run from this repository:
+
+~~~bash
+mkdir -p /srv/bodmas-staging/altered
+
+.venv/bin/python -m byteplot audit-pe \
+  --manifest /srv/BODMAS_G2/bodmas_manifest_v0_verified.csv \
+  --binary-root /srv/bodmas-staging \
+  --state-dir runs/e0-bodmas-full \
+  --expected-count 57293 --batch-size 0
+~~~
+
+The command prints the new snapshot directory. Its next_batch.csv is an allowlist
+of original SHA, relative member path and declared size for the next transfer.
+Planning with batch-size 0 defaults to 256 entries, at most 4 GiB of known sizes.
+If file_size is absent/invalid, only one unknown-size item is planned, explicitly
+flagged in summary.json; verify its actual size before transferring it.
+Files larger than the byte budget remain pending and are counted as oversized.
+
+### Transfer and audit one batch
+
+A human operator transfers ONLY the planned disarmed files from authorized
+isolated source storage, using approved offline media, preserving altered/<sha>.exe.
+Do not copy the full 68 GB archive or the full approximately 151 GB extracted set
+onto an 80 GB VM. Archive selection/extraction, if needed, belongs in the isolated
+source environment with adequate storage, not on a personal host.
+
+Use a trusted batch checksum list produced in that source environment. Check the
+disarmed file bytes after transfer, for example with sha256sum --check from inside
+the staging directory. Original SHA filenames are not checksums of disarmed bytes.
+If the existing full manifest already includes expected_disarmed_sha256, audit-pe
+also records match/mismatch; otherwise it records unverified. Never edit the
+original manifest to pretend a missing expected content hash was verified.
+
+~~~bash
+.venv/bin/python -m byteplot audit-pe \
+  --manifest /srv/BODMAS_G2/bodmas_manifest_v0_verified.csv \
+  --binary-root /srv/bodmas-staging \
+  --state-dir runs/e0-bodmas-full --resume \
+  --expected-count 57293 --batch-size 256 \
+  --max-batch-bytes 4294967296 --min-free-bytes 5368709120
+~~~
+
+Only staged regular files are audited; missing batches remain pending and are
+retried on a later invocation, without false "completed/missing" records. A sample
+error is committed independently and does not stop later samples. Completed
+records, including parse/read/tool errors, are not automatically retried.
+A file disappearing before it can be read remains pending.
+
+The batch size and byte budget limit new work per invocation, not how many files
+a human may copy beforehand. Actual file sizes are checked before auditing.
+Binary content is held for one sample at a time; the largest selected file must
+fit the VM's available RAM. Metadata for the complete manifest stays in memory.
+
+The default free-space floor is 5 GiB on BOTH the staging filesystem and checkpoint
+filesystem. A low_disk_space stop leaves remaining records pending. This floor is
+a guard, not a guarantee that an oversized transfer or output will fit. Check the
+real free space, filesystem file-size support and VM RAM before each transfer.
+
+### Checkpoint, snapshots and recovery
+
+checkpoint.sqlite3 is authoritative. SQLite uses WAL and synchronous=FULL, with
+one transaction committed per sample before progressing. An OS lock allows only
+one active auditor per state directory and is released on process death.
+Ctrl+C exits 130 after attempting a snapshot. Abrupt termination can leave an
+unfinished snapshot, but previously committed rows are recovered on --resume.
+Resume validates manifest bytes, root path, dimensions, audit code, pefile and DiE
+settings/version/database ID. Keep those fixed; performance limits may change.
+
+Each invocation creates a new immutable snapshots/<id>/ directory containing:
+
+| File | Meaning |
+| --- | --- |
+| batch.csv | Results committed by this invocation |
+| next_batch.csv | Transfer plan for pending original IDs |
+| summary.json | Cumulative counts, coverage, stop reason, budgets and free disk space |
+| results.csv | All committed results, only when --export is requested |
+
+Snapshots appear under their final name only after files are flushed/fsynced.
+Interrupted .partial-* directories are not valid snapshots and are never used as
+the checkpoint. A failed export does not erase database results; resume with
+--batch-size 0 --export to regenerate them in a new snapshot. This also includes
+rows committed by a process that died before exporting its own batch.csv.
+
+Summary separates parsed PE, parse failures, parsed-without-warnings, file errors,
+DiE packed/clean/unknown and tool status. A parsed PE is not proof of executable
+validity or packability. Truncation rate uses files actually read as denominator.
+Missing/unseen batches are pending, not counted as DiE scans. Successful command
+exit does not mean full coverage: require completed=57293, pending=0 and
+dataset_complete=true, then inspect all error and warning counts.
+
+After verifying a checkpoint/snapshot, the operator can rotate only the already
+committed batch out of staging according to the approved VM procedure, then bring
+in the next plan. The program never copies or deletes binaries. If a run crashed,
+export the recovered cumulative results before deciding which files can leave.
+Keep the checkpoint outside staging on a local filesystem with working SQLite
+locking/fsync. Stop the auditor before backing up the entire state directory;
+do not copy only the database while an active WAL writer is running.
+Retain an offline metadata backup; SQLite cannot protect against loss of the VM disk.
+
+### Export cumulative results, including after all staging files have left
+
+~~~bash
+.venv/bin/python -m byteplot audit-pe \
+  --manifest /srv/BODMAS_G2/bodmas_manifest_v0_verified.csv \
+  --binary-root /srv/bodmas-staging \
+  --state-dir runs/e0-bodmas-full --resume \
+  --expected-count 57293 --batch-size 0 --export
+~~~
+
+A small metadata snapshot is produced after each batch; full results.csv is
+opt-in so hundreds of cumulative CSV copies do not consume the 80 GB VM disk.
+For DiE, add the same --die /usr/local/bin/diec and --die-db-id value to EVERY
+invocation, including initialization/export. Without DiE all completed records have
+die_status=unknown with die_tool_status=not_run. The only external executable is
+the explicitly selected DiE scanner; no download, restore, execution or packing
+of malware is performed. This is static E0 audit evidence, not E1-E5 CNN results.
+
 ## 5. Chạy thí nghiệm nghiên cứu
 
 Ví dụ đầy đủ (cần dữ liệu thật đủ lớn):
