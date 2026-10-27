@@ -90,6 +90,17 @@ def main():
     audit.add_argument("--source-manifest")
     audit.add_argument("--bootstrap", type=int, default=500)
 
+    pe_audit = sub.add_parser("audit-pe", help="VM only: read-only PE audit of existing candidates.")
+    pe_audit.add_argument("--manifest", required=True, help="Existing candidate CSV; never modified.")
+    pe_audit.add_argument("--binary-root", required=True, help="Directory containing extracted sample paths.")
+    pe_audit.add_argument("--out", required=True, help="New output CSV outside binary-root; never overwritten.")
+    pe_audit.add_argument("--path-column", default="zip_member")
+    pe_audit.add_argument("--height", type=int, default=256)
+    pe_audit.add_argument("--width", type=int, default=256)
+    pe_audit.add_argument("--die", help="Optional trusted diec executable outside binary-root.")
+    pe_audit.add_argument("--timeout", type=float, default=120.0)
+    pe_audit.add_argument("--die-db-id", default="", help="Optional user-recorded DiE database version/commit.")
+
     view = sub.add_parser("visualize", help="Write channel visualizations as PNG.")
     view.add_argument("--manifest", required=True)
     view.add_argument("--out", required=True)
@@ -141,6 +152,13 @@ def main():
         elif args.command == "audit":
             from .experiments import audit
             audit(args.manifest, args.out, args.source_manifest, args.bootstrap)
+        elif args.command == "audit-pe":
+            from .pe_audit import audit_pe
+            try:
+                audit_pe(args.manifest, args.binary_root, args.out, args.height, args.width,
+                         args.die, args.timeout, args.path_column, args.die_db_id)
+            except OSError as exc:
+                parser.exit(2, f"Error: {exc}\n")
         elif args.command == "visualize":
             from .io import load_prepared
             from .report import visualize

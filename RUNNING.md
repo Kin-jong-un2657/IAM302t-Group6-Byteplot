@@ -179,6 +179,79 @@ Kiểm tra `dataset.json`, `prepare_errors.csv`, `runs/data-audit/data_quality.j
 
 Chỉ chuyển **thư mục `data/prepared/` và source code** sang Colab; không chuyển `data/raw/`, `data/variants*/bytes/` hay binary malware. Nhật ký audit dạng CSV có thể chuyển sau khi kiểm tra nội dung theo quy định của nhóm.
 
+## 4.5. Read-only PE audit for existing BODMAS candidates (Ubuntu VM)
+
+Run from the repository directory inside the isolated Ubuntu VM. This command
+reads existing extracted files only. It does not download, extract, restore,
+execute, pack or unpack samples; it does not recreate V0/pilot manifests or splits.
+
+For the existing CSV, zip_member contains altered/<original-sha>.exe.
+If those files are under /srv/bodmas-disarmed/altered/, use its parent as binary-root:
+
+~~~bash
+.venv/bin/python -m byteplot audit-pe \
+  --manifest /srv/BODMAS_G2/bodmas_pilot_10_pe_candidates.csv \
+  --binary-root /srv/bodmas-disarmed \
+  --out runs/e0-pe-pilot-10.csv \
+  --height 256 --width 256
+~~~
+
+Replace the two /srv paths with the actual locations already present in your VM.
+Do not pass a ZIP archive. zip_found=True does not establish file readability or
+PE validity. For another CSV with a relative path column, add --path-column path.
+Absolute paths, parent traversal and symlinks escaping binary-root are rejected.
+
+If the trusted DiE CLI is installed at /usr/local/bin/diec, choose a new output:
+
+~~~bash
+.venv/bin/python -m byteplot audit-pe \
+  --manifest /srv/BODMAS_G2/bodmas_pilot_10_pe_candidates.csv \
+  --binary-root /srv/bodmas-disarmed \
+  --out runs/e0-pe-pilot-10-die.csv \
+  --die /usr/local/bin/diec --timeout 120
+~~~
+
+DiE is the only external tool: --version records its version and -j performs the
+static scan. Its executable must be outside binary-root. Optionally add
+--die-db-id <version-or-commit> to record the database ID you have checked;
+the executable version does not automatically identify the signature database.
+Without DiE, die_tool_status=not_run and die_status=unknown. Errors, timeouts and
+unrecognized JSON never become clean. clean means no packer/protector was found
+among recognized typed detections, not proof that a sample is unpacked or safe.
+
+Source columns, including sha256, parent_sha256, group and variant, are preserved.
+parent_sha256 remains the original identity; disarmed_sha256 hashes the bytes
+actually read. Different values do not by themselves mean corruption. Only the
+optional expected_disarmed_sha256 column is treated as a content-hash expectation;
+disarmed_hash_check is match/mismatch when provided, otherwise unverified.
+identity_status=valid checks parent syntax only, not provenance.
+
+One output CSV record is written for every input record, in order, including
+duplicate parents, missing files, non-PE files and parser errors.
+
+| Group | Output columns |
+| --- | --- |
+| Provenance | audit_row, manifest_sha256, preserved source columns, resolved_path, file_status, error |
+| Content | disarmed_sha256, disarmed_hash_check, actual_size, size_matches_manifest |
+| PE | pe_status, pe_error, parse_warnings, structure_warnings |
+| Sections | section_count, declared_sections, sections: JSON with raw offset/size/end, virtual address/size, bounds and visible bytes |
+| Overlay | overlay_offset, overlay_size, visible_overlay_bytes; empty offset means no overlay |
+| Architecture | machine, architecture, subsystem, pe_format; the original Machine is not inferred from a disarmed header |
+| Header observations | disarm_header_hint records Machine=0 AND Subsystem=0, not proof of disarm/safety; certificate_present does not validate a signature |
+| Truncation | height, width, capacity_bytes, visible_bytes, truncated, visible_fraction, padding_fraction |
+| DiE | die_status, die_tool_status, die_packer, die_error, exit code, stdout/stderr, executable/version and database ID |
+
+parse_warnings, structure_warnings and sections contain JSON. Count records with
+a CSV reader, as tool stdout/stderr can contain newlines. Sizes and truncation use
+the actual file contents. Missing/unreadable files have empty content measurements.
+
+Output must be outside binary-root and is opened exclusively: an existing output
+is an error, with no overwrite switch. Exit code 0 means the report was written,
+not that every candidate passed. Review file_status, pe_status, hash checks and
+warnings before a later step. This report is not a training manifest for prepare:
+the main pipeline's V0 hash contract, CNN and E0-E5 recipes remain unchanged.
+This audit gives no evidence of packing success, classifier performance or H1-H4.
+
 ## 5. Chạy thí nghiệm nghiên cứu
 
 Ví dụ đầy đủ (cần dữ liệu thật đủ lớn):
