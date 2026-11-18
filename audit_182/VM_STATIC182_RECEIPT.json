@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "manifest_records": 182,
+  "completed": 182,
+  "pending": 0,
+  "dataset_complete": true,
+  "new_results_this_invocation": 182,
+  "stop_reason": "inventory_exhausted",
+  "pe_parsed": 182,
+  "pe_parse_errors": 0,
+  "pe_parsed_without_warnings": 100,
+  "files_read": 182,
+  "truncated_files": 145,
+  "truncation_rate_among_files_read": 0.7967032967032966,
+  "missing_seen_this_invocation": 0,
+  "over_budget_seen_this_invocation": 0,
+  "next_batch_count": 0,
+  "next_batch_known_bytes": 0,
+  "next_batch_unknown_sizes": 0,
+  "oversized_pending": 0,
+  "restoration": false,
+  "malware_execution": false,
+  "PE_packing_unpacking": false,
+  "training_admitted": 0,
+  "pe_status_counts": {
+    "parsed": 182
+  },
+  "die_counts": {
+    "packed": 58,
+    "clean": 102,
+    "unknown": 22
+  },
+  "disarmed_hash_check_counts": {
+    "match": 182
+  },
+  "scope": "182 selected disarmed candidates ONLY; not the 57,293-record checkpoint",
+  "evidence_kind": "VM terminal-export receipt, redacted; full per-file182 CSV MISSING in this hand-in",
+  "tools": {
+    "die": "3.21",
+    "pefile": "2024.8.26"
+  }
+}
+

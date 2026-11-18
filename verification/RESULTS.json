@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-18",
+  "workspace": ".",
+  "source_files_verified_unchanged": 515,
+  "core_code_files_byte_identical": 43,
+  "pytest": {
+    "files": 6,
+    "passed": 71,
+    "skipped": 1,
+    "reason": "Host cannot create symlinks"
+  },
+  "fresh_demo": {
+    "rows": 96,
+    "parents": 24,
+    "classifier_runs": 17,
+    "entropy_probes": 1,
+    "skipped_experiments": [],
+    "cpu_only": true
+  },
+  "saved_metric_checks": {
+    "classifier_runs": 17,
+    "variant_groups": 68,
+    "all_and_variant_groups": 85
+  },
+  "cpu_inference": {
+    "predictions": 24,
+    "parents": 6,
+    "max_probability_difference": 0
+  },
+  "e5": {
+    "aggregate_jobs": 12,
+    "channel_summaries": 4,
+    "test_parents": 10,
+    "checkpoint_replay": false
+  },
+  "privacy": {
+    "no_large_datasets": true,
+    "no_real_PE_imported": true,
+    "no_original_absolute_paths_in_imported_data": true,
+    "embedded_document_images_visually_reviewed": 18
+  },
+  "runtime": {
+    "python": "3.12.16",
+    "torch": "2.14.1+cpu",
+    "cuda": false,
+    "reused_existing_environment": true,
+    "original_environment_packages_modified": false
+  },
+  "guide": "RUNNING.md",
+  "publication_note": "Sanitized local CPU verification record; workspace location removed. Counts describe the prior local verification; see publication validation for checks on this snapshot."
+}

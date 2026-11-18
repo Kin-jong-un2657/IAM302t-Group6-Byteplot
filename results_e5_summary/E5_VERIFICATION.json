@@ -1,0 +1,45 @@
+{
+  "status": "E5_CONDITIONAL_PILOT_RESULTS_VERIFIED",
+  "completed_jobs": 12,
+  "models": 4,
+  "seeds": 3,
+  "independent_test_parents": 10,
+  "test_malware": 8,
+  "test_benign": 2,
+  "confusion_matrix_F1_FPR_consistency": "12_OF_12_MATCH",
+  "channel_mean_SD_consistency": "4_OF_4_MATCH",
+  "paired_pvalue_and_Holm_consistency": "6_OF_6_MATCH",
+  "private_checkpoints_received": false,
+  "parent_predictions_received": false,
+  "independent_checkpoint_or_prediction_replay": false,
+  "bootstrap_CI_independently_recomputed": false,
+  "all_one_class_jobs": [
+    {
+      "channel": "C1",
+      "seed": 17,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C1",
+      "seed": 73,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C3",
+      "seed": 17,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C3",
+      "seed": 37,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C3",
+      "seed": 73,
+      "predicted_class": 1
+    }
+  ],
+  "E5": "COMPLETED_CONDITIONAL_PILOT",
+  "source_matching_completed": false
+}

@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-04",
+  "teacher_feedback": "Gop y G6 _v3.pdf",
+  "teacher_feedback_sha256": "40001c213db45108b7564171cc67931c8faa7ce4a804d31edcc3f3f67aa25e62",
+  "requirements": [
+    {
+      "item": "E5:train UPX,test a different packer",
+      "status": "COMPLETED_AT_CONDITIONAL_PILOT_SCALE",
+      "evidence": "E5_RESULTS_RECEIVED/E5_RESULTS.csv",
+      "limits": "12jobs share10test parents:8malware+2benign; source confounding unresolved"
+    },
+    {
+      "item": "Compiler/linker/source matched cohort",
+      "status": "NOT_COMPLETED",
+      "evidence": "NEW_BENIGN_RESULTS_RECEIVED/RESULTS_FOR_CODEX.json",
+      "limits": "Prospective86malware+199benign; only7linker pairs,1Rich-product pair,0build-profile pairs; no matched training/evaluation"
+    },
+    {
+      "item": "Cohort size and M3 classifier grid",
+      "status": "LIMITATION_REMAINS",
+      "limits": "Old V0 50+50; conditional paired42+8; M3 remains4/12 passing prior gate; E5 does not repair these"
+    }
+  ],
+  "report_updated": false,
+  "Drive_modified": false,
+  "all_teacher_requirements_completed": false,
+  "next_priority": "Resolve matched-cohort common support; do not tune or repeat E5 on this old test set"
+}

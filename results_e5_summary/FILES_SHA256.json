@@ -1,0 +1,46 @@
+{
+  "ARCHIVE_RECEIPT.json": {
+    "bytes": 324,
+    "sha256": "9aa692984d5d9e4242277b0dc767ae8b1b1ba1e2a7b67734cd1f031c909b2fae"
+  },
+  "E5_CHANNEL_SUMMARY.csv": {
+    "bytes": 381,
+    "sha256": "006c4ed24f5fac4e1d4d3ce3814ca761762361299550bb8f8eb90ad868d5cf25"
+  },
+  "E5_INTERPRETATION_VI.txt": {
+    "bytes": 3935,
+    "sha256": "20159e9a03bb26063380c81e94e951d327a5c9b15cd6b3c668dad5a0ac11ed42"
+  },
+  "E5_MACRO_F1.png": {
+    "bytes": 35031,
+    "sha256": "3f5373c39eefd8773d2174b1ff87d70ae0889a4e940e53eaea7f76c8e4609fb6"
+  },
+  "E5_RESULTS.csv": {
+    "bytes": 2221,
+    "sha256": "b716898757dae8d7939f425e9cb1f98dffbf18f1cf82c7d84332b2aa33e93256"
+  },
+  "E5_RESULTS_SAFE.zip": {
+    "bytes": 31438,
+    "sha256": "a04c97c1e7df01e07cbf17f4277db6973f349fd21f1007d863a3a13bdf602d12"
+  },
+  "PAIRED_CORRECTNESS.json": {
+    "bytes": 1634,
+    "sha256": "15ab580b54f15a557221f9d54b6a92e5da86eda73f7e2e2dfeb70e20c2b8878d"
+  },
+  "RESULTS_FOR_CODEX.json": {
+    "bytes": 2024,
+    "sha256": "d3cec2bc32137dd2427189760de29a681ca14cfb38ea6dabfee1d7cd57f759a9"
+  },
+  "SAFE_CHECKSUMS.json": {
+    "bytes": 663,
+    "sha256": "f0ea7799bc654e1227041fe3579cd97ea877de62ea515544264c93d591cf7458"
+  },
+  "TEACHER_REQUIREMENTS_STATUS.json": {
+    "bytes": 1228,
+    "sha256": "481e5aaaf1664d513b2d1eaf6238ce882cf50a0cf60ea73646d027beff9b6dcb"
+  },
+  "VERIFICATION.json": {
+    "bytes": 1444,
+    "sha256": "28247df6ff6167de863cc46763c705770496027444352b727bdc341999b382c8"
+  }
+}

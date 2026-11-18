@@ -1,0 +1,27 @@
+E5 — Chuyển từ UPX sang MPRESS trên cohort pilot có điều kiện
+
+Thiết kế
+E5 sử dụng 31 parent huấn luyện và 9 parent validation dưới UPX (V1), sau đó đánh giá trên 10 parent test dưới MPRESS (V2: 8 malware, 2 benign). C1–C4 được huấn luyện với ba seed 17, 37 và 73, mỗi lượt 10 epoch. Checkpoint được chọn theo Macro-F1 validation V1; ngưỡng phân loại cố định 0,5. Các split và định danh parent được giữ nguyên. MPRESS chưa xuất hiện trong dữ liệu huấn luyện CNN; bộ mã hóa PE-region hiện có vẫn dùng heuristic tên section nhận biết cả UPX và MPRESS.
+
+Kết quả
+Cấu hình                         Macro-F1 trung bình ± SD       FPR trung bình qua seed
+C1: grayscale                    0,4963 ± 0,0898                0,8333
+C2: grayscale + entropy          0,6329 ± 0,2234                0,3333
+C3: grayscale + PE-region        0,4444 ± 0,0000                1,0000
+C4: cả ba kênh                   0,7079 ± 0,0935                0,1667
+
+Mỗi seed đánh giá trên cùng 10 parent. SD mô tả biến thiên giữa các lượt huấn luyện, không phải khoảng tin cậy trên 30 mẫu độc lập. FPR trung bình được tính qua ba seed trên cùng hai benign, không phải một tập benign mở rộng.
+
+Phân tích
+C2 có Macro-F1 trung bình cao hơn C1 trong pilot này nhưng biến thiên lớn giữa các seed. C4 đạt trung bình cao nhất trong bốn cấu hình. C3 dự đoán toàn bộ test là malware ở cả ba seed; C1 cũng có hành vi này tại seed 17 và 73. Vì vậy, accuracy 0,8 của các lượt dự đoán toàn malware không thể hiện khả năng phân biệt hai lớp.
+
+Sáu phép so sánh đúng/sai ghép cặp C1–C2 và C2–C3 có p McNemar chính xác từ 0,5 đến 1,0; sau hiệu chỉnh Holm đều bằng 1,0. Chúng chưa cung cấp bằng chứng thống kê về khác biệt đúng/sai và không phải kiểm định trực tiếp chênh lệch Macro-F1. Không suy ra các cấu hình tương đương hoặc entropy không có tác dụng. C4 chỉ được so sánh mô tả; không bổ sung kiểm định hậu nghiệm theo kết quả test.
+
+Giới hạn
+Test chỉ có hai benign nên FPR mỗi lượt thay đổi theo bước 0,5. Ngay cả FPR quan sát bằng 0, khoảng Wilson 95% vẫn có cận trên 0,6576. Bootstrap có thể cho khoảng Macro-F1 suy biến khi mô hình dự đoán duy nhất một lớp; điều này không chứng minh độ chắc chắn trên quần thể. Chênh lệch nguồn/compiler/linker chưa được loại trừ. Cohort là tập con tương thích UPX gồm 42 malware và 8 benign, không đại diện toàn bộ BODMAS hoặc mọi packer. Kiểm chứng V2 là kiểm chứng tĩnh; không khẳng định tương đương hành vi thực thi.
+
+Đối chiếu góp ý của giảng viên
+Đã bổ sung thí nghiệm E5 thực tế với một packer khác UPX ở quy mô pilot có điều kiện. Cohort matched vẫn chưa được dựng: pool hiện có chỉ hỗ trợ tối đa 7 cặp linker, 1 cặp Rich-product và 0 cặp Rich-product/build theo các tiêu chí đã thử. Lưới classifier M3 trước đó vẫn chỉ có 4/12 qua gate. Do đó chưa thể khẳng định đã hoàn thành toàn bộ yêu cầu hoặc entropy cải thiện CNN một cách tổng quát.
+
+Nguồn số liệu
+E5_RESULTS.csv; E5_CHANNEL_SUMMARY.csv; PAIRED_CORRECTNESS.json; RESULTS_FOR_CODEX.json. VERIFICATION.json ghi phạm vi kiểm tra, gồm checksum, ràng buộc đầu vào, Macro-F1/FPR từ confusion matrix, mean/SD và p-value. Gói SAFE không chứa dự đoán từng parent hoặc checkpoint; chưa có tái kiểm độc lập các checkpoint và bootstrap CI ngoài bước kiểm tra của runner Colab. Chưa cập nhật báo cáo hoặc Drive.

@@ -1,0 +1,22 @@
+{
+  "E5_CHANNEL_SUMMARY.csv": {
+    "bytes": 381,
+    "sha256": "006c4ed24f5fac4e1d4d3ce3814ca761762361299550bb8f8eb90ad868d5cf25"
+  },
+  "E5_MACRO_F1.png": {
+    "bytes": 35031,
+    "sha256": "3f5373c39eefd8773d2174b1ff87d70ae0889a4e940e53eaea7f76c8e4609fb6"
+  },
+  "E5_RESULTS.csv": {
+    "bytes": 2221,
+    "sha256": "b716898757dae8d7939f425e9cb1f98dffbf18f1cf82c7d84332b2aa33e93256"
+  },
+  "PAIRED_CORRECTNESS.json": {
+    "bytes": 1634,
+    "sha256": "15ab580b54f15a557221f9d54b6a92e5da86eda73f7e2e2dfeb70e20c2b8878d"
+  },
+  "RESULTS_FOR_CODEX.json": {
+    "bytes": 2024,
+    "sha256": "d3cec2bc32137dd2427189760de29a681ca14cfb38ea6dabfee1d7cd57f759a9"
+  }
+}

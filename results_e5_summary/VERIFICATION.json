@@ -1,0 +1,54 @@
+{
+  "status": "E5_CONDITIONAL_PILOT_RESULTS_VERIFIED",
+  "source_zip_sha256": "a04c97c1e7df01e07cbf17f4277db6973f349fd21f1007d863a3a13bdf602d12",
+  "source_zip_bytes": 31438,
+  "safe_members": 6,
+  "member_checksums_verified": 5,
+  "completed_jobs": 12,
+  "models": 4,
+  "seeds": 3,
+  "independent_test_parents": 10,
+  "test_malware": 8,
+  "test_benign": 2,
+  "feature_manifest_binding": "MATCH_TO_VERIFIED_PRIVATE_FEATURE_MANIFEST",
+  "source_code_hashes_match": true,
+  "confusion_matrix_F1_FPR_consistency": "12_OF_12_MATCH",
+  "channel_mean_SD_consistency": "4_OF_4_MATCH",
+  "paired_pvalue_and_Holm_consistency": "6_OF_6_MATCH",
+  "private_checkpoints_received": false,
+  "parent_predictions_received": false,
+  "independent_checkpoint_or_prediction_replay": false,
+  "bootstrap_CI_independently_recomputed": false,
+  "all_one_class_jobs": [
+    {
+      "channel": "C1",
+      "seed": 17,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C1",
+      "seed": 73,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C3",
+      "seed": 17,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C3",
+      "seed": 37,
+      "predicted_class": 1
+    },
+    {
+      "channel": "C3",
+      "seed": 73,
+      "predicted_class": 1
+    }
+  ],
+  "E5": "COMPLETED_CONDITIONAL_PILOT",
+  "source_matching_completed": false,
+  "Drive_modified": false,
+  "new_PDF": 0,
+  "new_MD": 0
+}

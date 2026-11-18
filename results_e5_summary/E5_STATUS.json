@@ -1,0 +1,45 @@
+{
+  "status": "E5_CONDITIONAL_PILOT_COMPLETED",
+  "experiment": "E5",
+  "train_samples": 31,
+  "validation_samples": 9,
+  "test_parents": 10,
+  "test_benign": 2,
+  "jobs_completed": 12,
+  "train_validation_packer": "UPX",
+  "test_packer": "MPRESS",
+  "seeds": [
+    17,
+    37,
+    73
+  ],
+  "channels": [
+    "C1",
+    "C2",
+    "C3",
+    "C4"
+  ],
+  "epochs": 10,
+  "bootstrap": 2000,
+  "threshold": 0.5,
+  "class_weight": true,
+  "selection": "First maximum V1 validation Macro-F1",
+  "real_data": true,
+  "synthetic": false,
+  "sample_execution": false,
+  "source_matching_completed": false,
+  "runtime": {
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "numpy": "2.4.6",
+    "cuda": true
+  },
+  "limits": [
+    "Conditional42M+8B cohort; no claim about all BODMAS or all packers",
+    "Only2 benign test parents; FPR changes in .5 increments",
+    "Three seeds share the same10 test parents, not30 independent samples",
+    "CIs conditional on fixed trained model and cohort",
+    "Source/toolchain confounding and matched-cohort requirement remain unresolved",
+    "No execution equivalence verification"
+  ]
+}

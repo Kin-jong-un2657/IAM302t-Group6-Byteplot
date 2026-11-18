@@ -1,0 +1,60 @@
+{
+  "core_pytest": {
+    "tests": 72,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 1,
+    "passed": 71
+  },
+  "auxiliary_pytest": {
+    "tests": 158,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "passed": 158
+  },
+  "date": "2026-11-18",
+  "scope": "Checks rerun on the clean publication snapshot; generated data stays excluded from Git.",
+  "runtime": {
+    "python": "3.12.16",
+    "torch": "2.14.1+cpu",
+    "CPU_only": true
+  },
+  "demo": {
+    "synthetic": true,
+    "seed": 17,
+    "epochs": 1,
+    "rows": 96,
+    "parents": 24,
+    "classifier_runs": 17,
+    "entropy_probes": 1,
+    "all_and_variant_metric_groups": 85,
+    "variant_metric_groups": 68,
+    "skipped_experiments": []
+  },
+  "synthetic_inference": {
+    "predictions": 16,
+    "parents": 4,
+    "identical_labels": true,
+    "maximum_probability_difference": 0.0
+  },
+  "static_audit": {
+    "records": 182,
+    "clean": 102,
+    "packed": 58,
+    "unknown": 22,
+    "truncated_at_64k": 145,
+    "redacted_csv_checksum_matches": true,
+    "raw_PE_analysis_rerun": false
+  },
+  "e5": {
+    "aggregate_jobs_checked": 12,
+    "configuration_summaries_checked": 4,
+    "test_parents": 10,
+    "benign_test_parents": 2,
+    "checkpoint_replay": false,
+    "independent_bootstrap_reconstruction": false
+  },
+  "personal_paths_removed": true,
+  "core_code_and_tests_unchanged": true
+}

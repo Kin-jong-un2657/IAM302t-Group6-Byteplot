@@ -1,0 +1,68 @@
+[
+  {
+    "seed": 17,
+    "a": "C1",
+    "b": "C2",
+    "n": 10,
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 2,
+    "pvalue_exact": 1.0,
+    "note": "Two-sided exact test of paired correctness, not a direct test of F1.",
+    "pvalue_holm_six_comparisons": 1.0
+  },
+  {
+    "seed": 17,
+    "a": "C2",
+    "b": "C3",
+    "n": 10,
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 2,
+    "pvalue_exact": 1.0,
+    "note": "Two-sided exact test of paired correctness, not a direct test of F1.",
+    "pvalue_holm_six_comparisons": 1.0
+  },
+  {
+    "seed": 37,
+    "a": "C1",
+    "b": "C2",
+    "n": 10,
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 1,
+    "pvalue_exact": 1.0,
+    "note": "Two-sided exact test of paired correctness, not a direct test of F1.",
+    "pvalue_holm_six_comparisons": 1.0
+  },
+  {
+    "seed": 37,
+    "a": "C2",
+    "b": "C3",
+    "n": 10,
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 2,
+    "pvalue_exact": 1.0,
+    "note": "Two-sided exact test of paired correctness, not a direct test of F1.",
+    "pvalue_holm_six_comparisons": 1.0
+  },
+  {
+    "seed": 73,
+    "a": "C1",
+    "b": "C2",
+    "n": 10,
+    "a_correct_b_wrong": 2,
+    "a_wrong_b_correct": 0,
+    "pvalue_exact": 0.5,
+    "note": "Two-sided exact test of paired correctness, not a direct test of F1.",
+    "pvalue_holm_six_comparisons": 1.0
+  },
+  {
+    "seed": 73,
+    "a": "C2",
+    "b": "C3",
+    "n": 10,
+    "a_correct_b_wrong": 0,
+    "a_wrong_b_correct": 2,
+    "pvalue_exact": 0.5,
+    "note": "Two-sided exact test of paired correctness, not a direct test of F1.",
+    "pvalue_holm_six_comparisons": 1.0
+  }
+]

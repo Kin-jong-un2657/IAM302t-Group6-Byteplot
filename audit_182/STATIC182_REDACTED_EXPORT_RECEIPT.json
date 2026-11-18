@@ -1,0 +1,57 @@
+{
+  "status": "VERIFIED_EXISTING_METADATA_EXPORT",
+  "counts": {
+    "records": 182,
+    "parsed": 182,
+    "parse_errors": 0,
+    "clean": 102,
+    "packed": 58,
+    "unknown": 22,
+    "truncated": 145,
+    "without_warnings": 100,
+    "disarmed_hash_matches": 182
+  },
+  "metadata_only": true,
+  "binary_read": false,
+  "PE_execution": false,
+  "audit_repeated": false,
+  "training_performed": false,
+  "source_metadata_unchanged": true,
+  "source_metadata_checksums": {
+    "results.csv": "8abce27ef80029a51af81c9663dfb0ee6c1fcbbf87cfb061b7823cb4117b8828",
+    "summary.json": "c4bb51ab4b67257463cd084853cf720bfa7b0621f9bdc9cf7f40f82d949fff8d"
+  },
+  "export_csv_sha256": "7c42e69d8bdf794cd2a921972f153c301b26a32b7003bb88079f4f82d7cfc0dd",
+  "export_fields": [
+    "record_id",
+    "file_status",
+    "pe_status",
+    "die_status",
+    "die_tool_status",
+    "disarmed_hash_check",
+    "parse_warning_count",
+    "structure_warning_count",
+    "section_count",
+    "size_bin",
+    "truncated_at_64k",
+    "overlay_present",
+    "disarm_header_hint",
+    "certificate_directory_present",
+    "pe_format"
+  ],
+  "removed_fields": [
+    "original/disarmed/sample SHA",
+    "family",
+    "exact file sizes",
+    "paths",
+    "section names",
+    "free-text warnings",
+    "tool stdout/stderr"
+  ],
+  "scope": "Selected 182 disarmed audit records, not the full BODMAS dataset",
+  "identity_note": "Original identity mapping stays in VM; ordinal aliases are not hashes",
+  "truncation_note": "Recorded size exceeds 65536-byte representation; not physical PE corruption",
+  "die_note": "DiE clean is not proof of unpacked, particularly on disarmed files",
+  "provenance_note": "Counts are recomputed from existing CSV; not an independent rerun of PE analysis"
+}
+

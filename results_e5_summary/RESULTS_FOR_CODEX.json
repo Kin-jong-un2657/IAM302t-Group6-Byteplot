@@ -1,0 +1,58 @@
+{
+  "status": "E5_CONDITIONAL_PILOT_COMPLETED",
+  "experiment": "E5",
+  "train_samples": 31,
+  "validation_samples": 9,
+  "test_parents": 10,
+  "test_benign": 2,
+  "jobs_completed": 12,
+  "train_validation_packer": "UPX",
+  "test_packer": "MPRESS",
+  "seeds": [
+    17,
+    37,
+    73
+  ],
+  "channels": [
+    "C1",
+    "C2",
+    "C3",
+    "C4"
+  ],
+  "epochs": 10,
+  "bootstrap": 2000,
+  "threshold": 0.5,
+  "class_weight": true,
+  "selection": "First maximum V1 validation Macro-F1",
+  "real_data": true,
+  "synthetic": false,
+  "sample_execution": false,
+  "source_matching_completed": false,
+  "source_feature_packet_sha256": "32c6211904655b4d4842be98ad3e3f3356e382c3c8ddf69fd1a7dc1edbb9698a",
+  "E5_feature_packet_sha256": "1002efec852004d9555bef78a4e8e881787dcd51010f009bfe0bc8bee6c5cd67",
+  "V2_summary_sha256": "14f44cf6edfa7bc2b34dd4705b3aa611bf55012b07772933701b6866ff34c46d",
+  "training_manifest_sha256": "a4dc7cbb278888a5b16f53b08c09507b82747457aba45739d81c4ce5ee71eff5",
+  "source_files": {
+    "engine.py": "49f965769c3c418f4133fe9603c9a6a8ba10792a51776457a9bdbd5038d323a2",
+    "models.py": "5e00a4c65fbdd22445a14d147c53af63883bfbbd7b5e14fef27a7234857a1986",
+    "io.py": "872f058425df15e2470c957bd528dbe5099e31c28ad328c69fe1d2d166639c43",
+    "metrics.py": "3131abadf735dfb662cb0d7b2ccd3d207e2969e36206d1d8122fac19d6243da8",
+    "representation.py": "9cf00c75fa5665d2a50542f4a6f323b11addd86bb1a2c25d3f3b49d842714c5b"
+  },
+  "runtime": {
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "numpy": "2.4.6",
+    "cuda": true
+  },
+  "limits": [
+    "Conditional42M+8B cohort; no claim about all BODMAS or all packers",
+    "Only2 benign test parents; FPR changes in .5 increments",
+    "Three seeds share the same10 test parents, not30 independent samples",
+    "CIs conditional on fixed trained model and cohort",
+    "Source/toolchain confounding and matched-cohort requirement remain unresolved",
+    "No execution equivalence verification"
+  ],
+  "Drive_modified": false,
+  "report_updated": false
+}
